@@ -1,14 +1,14 @@
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Day1 {
 
     public static void main(String[] args) {
-        int[] leftList = new int[1000];
-        int[] rightList = new int[1000];
-        int i = 0;
+        List<Integer> leftList = new ArrayList<>();
+        List<Integer> rightList = new ArrayList<>();
 
         try {
             File file = new File("inputs/day1.txt");
@@ -17,9 +17,8 @@ public class Day1 {
             while (scanner.hasNextLine()) {
                 String line = scanner.nextLine();
                 String[] numbers = line.split("   ");
-                leftList[i] = Integer.parseInt(numbers[0]);
-                rightList[i] = Integer.parseInt(numbers[1]);
-                i++;
+                leftList.add(Integer.parseInt(numbers[0]));
+                rightList.add(Integer.parseInt(numbers[1]));
             }
 
             scanner.close();
@@ -28,42 +27,37 @@ public class Day1 {
             e.printStackTrace();
         }
 
-        Arrays.sort(leftList);
-        Arrays.sort(rightList);
+        leftList.sort(null);
+        rightList.sort(null);
 
         System.out.println("Part 1: " + partOne(leftList, rightList));
         System.out.println("Part 2: " + partTwo(leftList, rightList));
     }
 
-    public static int partOne(int[] leftList, int[] rightList) {      
+    public static int partOne(List<Integer> leftList, List<Integer> rightList) {      
         int result = 0;       
 
-        for (int j = 0; j < leftList.length; j++) {
-            result += Math.abs(leftList[j] - rightList[j]);
+        for (int i = 0; i < leftList.size(); i++) {
+            result += Math.abs(leftList.get(i) - rightList.get(i));
         }
 
         return result;
 
     }
 
-    public static int partTwo(int[] leftList, int[] rightList) {
+    public static int partTwo(List<Integer> leftList, List<Integer> rightList) {
         int result = 0;
 
-        for (int i = 0; i < leftList.length; i++) {
-            int index = -1; 
-            for (int j = 0; j < rightList.length; j++) {
-                if (leftList[i] == rightList[j]) {
-                    index = j;
-                    break;
-                }
-            }
+        for (int i = 0; i < leftList.size(); i++) {
+            int number = leftList.get(i);
+            int index = rightList.indexOf(number); 
             if (index > 0) {
                 int counter = 0;
-                while (rightList[index] == leftList[i]) {
+                while (rightList.get(index) == number) {
                     counter++;
                     index++;
                 }
-                result += leftList[i] * counter;
+                result += number * counter;
             }
         }
 
