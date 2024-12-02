@@ -1,30 +1,20 @@
-import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Day1 {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         List<Integer> leftList = new ArrayList<>();
         List<Integer> rightList = new ArrayList<>();
 
-        try {
-            File file = new File("inputs/day1.txt");
-            Scanner scanner = new Scanner(file);
+        List<String> input = Files.readAllLines(Path.of("inputs/day1.txt"));
 
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                String[] numbers = line.split("   ");
-                leftList.add(Integer.parseInt(numbers[0]));
-                rightList.add(Integer.parseInt(numbers[1]));
-            }
-
-            scanner.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("An error occurred.");
-            e.printStackTrace();
+        for (int i = 0; i < input.size(); i++) {
+            leftList.add(Integer.parseInt(input.get(i).split("   ")[0]));
+            rightList.add(Integer.parseInt(input.get(i).split("   ")[1]));
         }
 
         leftList.sort(null);
@@ -34,8 +24,8 @@ public class Day1 {
         System.out.println("Part 2: " + partTwo(leftList, rightList));
     }
 
-    public static int partOne(List<Integer> leftList, List<Integer> rightList) {      
-        int result = 0;       
+    public static int partOne(List<Integer> leftList, List<Integer> rightList) {
+        int result = 0;
 
         for (int i = 0; i < leftList.size(); i++) {
             result += Math.abs(leftList.get(i) - rightList.get(i));
@@ -50,7 +40,7 @@ public class Day1 {
 
         for (int i = 0; i < leftList.size(); i++) {
             int number = leftList.get(i);
-            int index = rightList.indexOf(number); 
+            int index = rightList.indexOf(number);
             if (index > 0) {
                 int counter = 0;
                 while (rightList.get(index) == number) {
